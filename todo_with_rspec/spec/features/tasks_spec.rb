@@ -34,7 +34,6 @@ end
      before :each do
        @task = create(:task)
      end
-
     scenario 'User edits task' do
       visit task_path(@task)
       expect(page).to have_content('buy beer')

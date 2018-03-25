@@ -32,3 +32,70 @@ Migrating to AddUserIdAndDueDateToTasks (20180317030431)
   [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
   [1m[35m (0.0ms)[0m  [1m[36mcommit transaction[0m
   [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Started GET "/" for ::1 at 2018-03-24 20:26:03 -0400
+  [1m[36mActiveRecord::SchemaMigration Load (0.5ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by Rails::WelcomeController#index as HTML
+  Parameters: {"internal"=>true}
+  Rendering /Users/cecili/.rbenv/versions/2.3.4/lib/ruby/gems/2.3.0/gems/railties-5.0.0.1/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /Users/cecili/.rbenv/versions/2.3.4/lib/ruby/gems/2.3.0/gems/railties-5.0.0.1/lib/rails/templates/rails/welcome/index.html.erb (5.7ms)
+Completed 200 OK in 38ms (Views: 19.4ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/tasks" for ::1 at 2018-03-24 20:26:26 -0400
+Processing by TasksController#index as HTML
+  Rendering tasks/index.html.erb within layouts/application
+  [1m[36mTask Load (0.4ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks"[0m
+  Rendered tasks/index.html.erb within layouts/application (6.1ms)
+Completed 200 OK in 473ms (Views: 462.1ms | ActiveRecord: 0.6ms)
+
+
+Started GET "/tasks/new" for ::1 at 2018-03-24 20:26:28 -0400
+Processing by TasksController#new as HTML
+  Rendering tasks/new.html.erb within layouts/application
+  Rendered tasks/_form.html.erb (19.8ms)
+  Rendered tasks/new.html.erb within layouts/application (27.1ms)
+Completed 200 OK in 112ms (Views: 97.0ms | ActiveRecord: 0.5ms)
+
+
+Started POST "/tasks" for ::1 at 2018-03-24 20:26:32 -0400
+Processing by TasksController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"ZVDWGwloXD3Mgyu0DFN3mQSkTbSMt56IdtLy5VPQuHzdkEfLILCczrKEBCEvAnjoaXY6JEAUwnTH1gNZPWQ1JQ==", "task"=>{"name"=>"beer", "priority"=>"1"}, "commit"=>"Create Task"}
+  [1m[35m (0.5ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+Completed 500 Internal Server Error in 33988ms (ActiveRecord: 0.6ms)
+
+
+  
+SystemExit (exit):
+  
+app/controllers/tasks_controller.rb:8:in `create'
+  Rendering /Users/cecili/.rbenv/versions/2.3.4/lib/ruby/gems/2.3.0/gems/actionpack-5.0.0.1/lib/action_dispatch/middleware/templates/rescues/diagnostics.html.erb within rescues/layout
+  Rendering /Users/cecili/.rbenv/versions/2.3.4/lib/ruby/gems/2.3.0/gems/actionpack-5.0.0.1/lib/action_dispatch/middleware/templates/rescues/_source.html.erb
+  Rendered /Users/cecili/.rbenv/versions/2.3.4/lib/ruby/gems/2.3.0/gems/actionpack-5.0.0.1/lib/action_dispatch/middleware/templates/rescues/_source.html.erb (149.6ms)
+  Rendering /Users/cecili/.rbenv/versions/2.3.4/lib/ruby/gems/2.3.0/gems/actionpack-5.0.0.1/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb
+  Rendered /Users/cecili/.rbenv/versions/2.3.4/lib/ruby/gems/2.3.0/gems/actionpack-5.0.0.1/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (36.0ms)
+  Rendering /Users/cecili/.rbenv/versions/2.3.4/lib/ruby/gems/2.3.0/gems/actionpack-5.0.0.1/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb
+  Rendered /Users/cecili/.rbenv/versions/2.3.4/lib/ruby/gems/2.3.0/gems/actionpack-5.0.0.1/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (8.6ms)
+  Rendered /Users/cecili/.rbenv/versions/2.3.4/lib/ruby/gems/2.3.0/gems/actionpack-5.0.0.1/lib/action_dispatch/middleware/templates/rescues/diagnostics.html.erb within rescues/layout (326.9ms)
+  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to AddUserIdAndDueDateToTasks (20180317030431)
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE TEMPORARY TABLE "atasks" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "priority" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "due_date" datetime, "user_id" integer)[0m
+  [1m[35m (0.3ms)[0m  [1m[32mINSERT INTO "atasks" ("id","name","priority","created_at","updated_at","due_date","user_id")
+                     SELECT "id","name","priority","created_at","updated_at","due_date","user_id" FROM "tasks"[0m
+  [1m[35m (0.9ms)[0m  [1m[35mDROP TABLE "tasks"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "tasks" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "priority" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "due_date" datetime)[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "tasks" ("id","name","priority","created_at","updated_at","due_date")
+                     SELECT "id","name","priority","created_at","updated_at","due_date" FROM "atasks"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "atasks"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "atasks" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "priority" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "due_date" datetime)[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "atasks" ("id","name","priority","created_at","updated_at","due_date")
+                     SELECT "id","name","priority","created_at","updated_at","due_date" FROM "tasks"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "tasks"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "tasks" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "priority" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "tasks" ("id","name","priority","created_at","updated_at")
+                     SELECT "id","name","priority","created_at","updated_at" FROM "atasks"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "atasks"[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[31mDELETE FROM "schema_migrations" WHERE "schema_migrations"."version" = ?[0m  [["version", "20180317030431"]]
+  [1m[35m (1.7ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m

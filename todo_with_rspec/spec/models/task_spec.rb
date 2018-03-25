@@ -25,8 +25,8 @@ RSpec.describe Task, type: :model do
     expect(task.valid?).to eq(false)
   end
 
-  it 'belongs to User' do
-    task = create(:task)
-    expect(task.user).not_to eq(nil)
-  end
+  # it 'belongs to User' do
+  #   task = create(:task)
+  #   expect(task.user).not_to eq(nil)
+  # end
 end
