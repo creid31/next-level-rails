@@ -4,8 +4,14 @@ class TasksController < ApplicationController
   end
 
   def create
-    @task = Task.create(task_params)
-    redirect_to @task
+    @task = Task.new(task_params)
+    respond_to do |format|
+      if @task.save
+        format.html { redirect_to task_path(@task) }
+      else
+        format.html { render :new }
+      end
+    end
   end
 
   def new
@@ -17,15 +23,18 @@ class TasksController < ApplicationController
   end
 
   def edit
-    # byebug
     @task = Task.find(params[:id])
-    redirect_to @task
   end
 
   def update
     @task = Task.find(params[:id])
-    @task.update(task_params)
-    redirect_to @task
+    respond_to do |format|
+      if @task.update(task_params)
+        format.html { redirect_to task_path(@task) }
+      else
+        format.html { render :edit }
+      end
+    end
   end
 
   def destroy
